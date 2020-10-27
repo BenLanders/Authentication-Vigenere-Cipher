@@ -50,7 +50,7 @@ def decryptText(cipher_text, key):
 def start_encrypt():
     tk.Label(window,text='                                                                                                                                                                   ').grid(row=4,columnspan=2,sticky=tk.W)
     f = open ('secretmessage.txt', 'w')
-    originalMessage = (e6.get())
+    originalMessage = (e6.get("1.0",'end-1c'))
     message = upperCase(originalMessage)
     keyword = loginPassword
     key = generateKey(message, keyword) 
@@ -63,7 +63,7 @@ def start_encrypt():
 def start_decrypt():
     tk.Label(window,text='                                                                                                                                                                   ').grid(row=4,columnspan=2,sticky=tk.W)
     f = open('secretmessage.txt', 'r')
-    cipher_text = (f.readline())
+    cipher_text = (f.read())
     f.close()
     keyword = loginPassword
     key = generateKey(cipher_text, keyword)
@@ -71,6 +71,7 @@ def start_decrypt():
            decryptText(cipher_text, key))
     decrypt = decryptText(cipher_text, key)
     tk.Label(window,text="Decrypted text: " + decrypt,font=11).grid(row=4,columnspan=2,padx=10,pady=10,sticky=tk.W)
+
 def register():   
     username = (e1.get())
     one = (e2.get())
@@ -103,14 +104,14 @@ def instructions():
     global window
     window = tk.Toplevel(app)
     window.title('Encrypt or Decrypt')
-    window.geometry('530x300')
+    window.geometry('530x500')
     tk.Label(window, text="Encrypt or Decrypt", font=LARGE_FONT).grid(row=0,column=0,columnspan=2,pady=5,padx=10)
     tk.Label(window, text=
 """Use the form below to encrypt a message. The encrypted
 message is saved to the file 'secretmessage.txt'. The
 encrypted message can then be decrypted.""",font=REGULAR_FONT).grid(row=1,column=0,columnspan=2,pady=5,padx=10,sticky=tk.E)
     global e6
-    e6 = tk.Entry(window,fg='black',bg='yellow',width=45,font=1)
+    e6 = tk.Text(window,fg='black',bg='yellow', height=5,width=46,font=1)
     e6.grid(row=2, column=0, columnspan=2, padx=10)
     button = tk.Button(window, text="Encrypt to File",fg='yellow',bg='red',activebackground = 'red',font=1,width=15,
                             command=start_encrypt)
@@ -118,7 +119,7 @@ encrypted message can then be decrypted.""",font=REGULAR_FONT).grid(row=1,column
 
     button2 = tk.Button(window, text="Decrypt from File",fg='yellow',bg='red',activebackground='red',font=1,width=15,
                             command=start_decrypt)
-    button2.grid(row=3,column=1,pady=10,sticky=tk.E)
+    button2.grid(row=3,column=1,padx=10,pady=10,sticky=tk.E)
     
 
 def login():
@@ -159,7 +160,7 @@ LARGE_FONT= ('Verdana', 14, 'bold')
 REGULAR_FONT= ('Verdana', 12)
 
 
-class SeaofBTCapp(tk.Tk):
+class Vigenere(tk.Tk):
 
     def __init__(self, *args, **kwargs):
         
@@ -173,7 +174,7 @@ class SeaofBTCapp(tk.Tk):
 
         self.frames = {}
 
-        for F in (StartPage, RegisterPage, LoginPage, PageThree):
+        for F in (StartPage, RegisterPage, LoginPage):
 
             frame = F(container, self)
 
@@ -203,7 +204,7 @@ text. The encrypted text is saved in the file
 'secretmessage.txt'. The secret key is the user's password.""",font=REGULAR_FONT)
         label.grid(row=1,column=0,columnspan=3,pady=20,padx=10,sticky=tk.E)
 
-        button = tk.Button(self, text="Register",fg='yellow',bg='red',activebackground = 'red',font=1,width=10,
+        button = tk.Button(self, text="Register",fg='yellow',bg='red',activebackground ='red',font=1,width=10,
                             command=lambda: controller.show_frame(RegisterPage))
         button.grid(row=2,column=0,padx=10,pady=45)
 
@@ -279,27 +280,7 @@ class LoginPage(tk.Frame):
 
         e4.grid(row=1, column=1, columnspan=2)
         e5.grid(row=2, column=1, columnspan=2)
-
-
-class PageThree(tk.Frame):
-
-    def __init__(self, parent, controller):
-        tk.Frame.__init__(self, parent)
-        label = tk.Label(self, text="", font=LARGE_FONT)
-        label.grid(row=0,column=0,pady=10,padx=10)
-
-        button1 = tk.Button(self, text="Back to Home",
-                            command=lambda: controller.show_frame(StartPage))
-        button1.grid(row=3,column=0)
-
-        button2 = tk.Button(self, text="Encrypt",
-                            command=lambda: [controller.show_frame(StartPage),login()])
-        button2.grid(row=3,column=1)
-
-        button3 = tk.Button(self, text="Decrypt",
-                            command=lambda: [controller.show_frame(StartPage),login()])
-        button3.grid(row=3,column=2)
       
-app = SeaofBTCapp()
+app = Vigenere()
 app.geometry('530x300')
 app.mainloop()
